@@ -88,18 +88,5 @@ class CommitteeManagementAuthority
         $this->manager->followCommittee($adherent, $committee);
 
         $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new FollowCommitteeEvent($adherent, $committee));
-
-        if (!$hosts = $this->manager->getCommitteeHosts($committee)->toArray()) {
-            return;
-        }
-
-        $this->mailer->sendMessage(CommitteeNewFollowerMessage::create(
-            $committee,
-            $hosts,
-            $adherent,
-            $this->urlGenerator->generate('app_committee_manager_list_members', [
-                'slug' => $committee->getSlug(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
-        ));
     }
 }
